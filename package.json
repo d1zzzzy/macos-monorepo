@@ -1,0 +1,14 @@
+{
+  "name": "macos-monorepo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start:frontend": "cd packages/frontend-app && yarn start",
+    "start:backend": "cd packages/backend-app && node index.js"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}

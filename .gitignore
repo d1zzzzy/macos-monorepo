@@ -1,4 +1,6 @@
+.idea
 /packages/**/node_modules
 /node_modules
 
+/packages/**/yarn-error.log
 yarn.lock

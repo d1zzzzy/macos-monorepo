@@ -1,0 +1,79 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\yarn\bin\yarn.js start
+
+PATH: 
+  C:\Program Files\Microsoft\jdk-11.0.18.10-hotspot\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Users\daizh\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\ProgramData\chocolatey\bin;C:\Program Files\starship\bin\;C:\Users\daizh\.cargo\bin;C:\Users\daizh\AppData\Local\pnpm;C:\Users\daizh\AppData\Local\Microsoft\WindowsApps;C:\Users\daizh\AppData\Roaming\nvm;C:\Program Files\nodejs;D:\programming\WebStorm 2022.3.2\bin;;C:\Users\daizh\.dotnet\tools;D:\software\DataGrip 2023.1.1\bin;;C:\Users\daizh\AppData\Local\Programs\oh-my-posh\bin;C:\Users\daizh\.deno\bin;D:\software\Microsoft VS Code\bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.14.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: F:\Mine\macos-monorepo\packages\frontend-app\package.json: Unexpected token } in JSON at position 538
+      at JSON.parse (<anonymous>)
+      at C:\Users\daizh\AppData\Roaming\nvm\v16.14.0\node_modules\yarn\lib\cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (C:\Users\daizh\AppData\Roaming\nvm\v16.14.0\node_modules\yarn\lib\cli.js:310:30)
+      at C:\Users\daizh\AppData\Roaming\nvm\v16.14.0\node_modules\yarn\lib\cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "frontend-app",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      "@testing-library/jest-dom": "^5.17.0",
+      "@testing-library/react": "^13.4.0",
+      "@testing-library/user-event": "^13.5.0",
+      "@types/jest": "^27.5.2",
+      "@types/node": "^16.18.61",
+      "@types/react": "^18.2.37",
+      "@types/react-dom": "^18.2.15",
+      "@types/react-router-dom": "^5.3.3",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "react-router-dom": "^6.18.0",
+      "react-scripts": "5.0.1",
+      "typescript": "^4.9.5",
+    },
+    "scripts": {
+      "start": "craco start",
+      "build": "craco build",
+      "test": "craco test",
+      "eject": "craco eject"
+    },
+    "eslintConfig": {
+      "extends": [
+        "react-app",
+        "react-app/jest"
+      ]
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    },
+    "devDependencies": {
+      "@craco/craco": "^7.1.0",
+      "less": "^4.2.0",
+      "less-loader": "^11.1.3"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

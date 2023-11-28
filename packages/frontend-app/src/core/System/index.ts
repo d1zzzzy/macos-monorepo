@@ -1,5 +1,5 @@
 import type { Application } from "./applicationManager";
-import { VirtualFileSystem } from "../VFS/class/VirtualFileSystem";
+import { VirtualFileSystem } from "../VFS/klass/VirtualFileSystem";
 import { ApplicationManager } from "./applicationManager";
 import { TaskManager } from "./taskManager";
 import { SystemState } from './constants/status';
@@ -25,6 +25,7 @@ export class System {
   private settings: SystemSettings | null = null; // 系统设置
   private activeWindows: Set<number> | null = null; // 当前活动窗口的ID集合
   private state: SystemState = SystemState.Off;
+  private notActivate = true; // 系统未激活
 
   constructor() {
     // 初始化代码...
@@ -163,5 +164,9 @@ export class System {
     return this.taskManager?.listTasks();
   }
 
+ // 从缓存中读取默认的数据并配置
+  loadDataFromStorage() {
+
+  }
   // 更多系统级方法...
 }

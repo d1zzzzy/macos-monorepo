@@ -1,8 +1,8 @@
-import type { Application } from "./applicationManager";
-import { VirtualFileSystem } from "../VFS/klass/VirtualFileSystem";
-import { ApplicationManager } from "./applicationManager";
-import { TaskManager } from "./taskManager";
-import { SystemState } from './constants/status';
+import type {Application} from "./applicationManager";
+import {ApplicationManager} from "./applicationManager";
+import {VirtualFileSystem} from "../VFS/klass/VirtualFileSystem";
+import {TaskManager} from "./taskManager";
+import {SystemState} from './constants/status';
 
 interface User {
   id: string;
@@ -29,6 +29,8 @@ export class System {
 
   constructor() {
     // 初始化代码...
+    this.state = SystemState.ShuttingDown; // 默认关机
+
     this.start();
   }
 

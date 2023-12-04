@@ -29,14 +29,21 @@ export class System {
 
   constructor() {
     // 初始化代码...
-    this.state = SystemState.ShuttingDown; // 默认关机
-
-    this.start();
+    this.state = SystemState.Off; // 默认关机
   }
 
   // 系统状态控制方法
-  start() {
+  start(config?: {
+    onBefore?: () => void,
+    onSucceed?: () => void,
+    onFailed?: () => void,
+  }) {
+    const { onBefore, onSucceed, onFailed } = config || {};
+
     if (this.state === SystemState.Off) {
+      // 启动前的回调
+      onBefore && onBefore();
+
       this.state = SystemState.Starting;
       // 这里可以添加启动所需的初始化流程
       // 比如初始化VFS、加载系统设置等
@@ -50,8 +57,10 @@ export class System {
         };
         this.activeWindows = new Set();
         this.state = SystemState.Running;
+
         // 触发系统启动完成的事件
-      }, 1000); // 假设启动过程需要1秒钟
+        onSucceed && onSucceed();
+      }, 1500); // 假设启动过程需要1.5秒钟
     }
   }
 
@@ -171,4 +180,35 @@ export class System {
 
   }
   // 更多系统级方法...
+
+  /**
+   * 系统状态判断
+   */
+  get isOff(): boolean {
+    return this.state === SystemState.Off;
+  }
+
+  get isStarting(): boolean {
+    return this.state === SystemState.Starting;
+  }
+
+  get isNotActivate(): boolean {
+    return this.state === SystemState.NotActivate;
+  }
+
+  get isNotLoginIn(): boolean {
+    return this.state === SystemState.NotLoginIn;
+  }
+
+  get isRunning(): boolean {
+    return this.state === SystemState.Running;
+  }
+
+  get isSuspended(): boolean {
+    return this.state === SystemState.Suspended;
+  }
+
+  get isShuttingDown(): boolean {
+    return this.state === SystemState.ShuttingDown;
+  }
 }

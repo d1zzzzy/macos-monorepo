@@ -6,4 +6,11 @@ const Icon = createFromIconfontCN({
   ],
 });
 
+
+export function AppleIcon() {
+  return (
+    <Icon type={'icon-apple'} style={{ color: '#fff', fontSize: '48px' }} />
+  );
+}
+
 export default Icon;

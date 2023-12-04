@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback } from "react";
+import {useCallback, useEffect} from "react";
 
 import { System } from "../core/System";
 import { IState } from "../store/reducers";
@@ -10,11 +10,16 @@ export function useSystem() {
   const system = useSelector((state: IState) => state.app.system);
 
   const init = useCallback(() => {
-    console.log(' call once ')
     const system = new System();
 
     dispatch(initSystem(system));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (system) {
+
+    }
+  }, [system])
 
   return {
     system,

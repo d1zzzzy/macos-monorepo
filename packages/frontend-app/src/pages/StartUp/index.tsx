@@ -8,6 +8,7 @@ import rootRoute from '@/App';
 import Icon, { AppleIcon } from '@components/Icon';
 import { FitContainer } from '@components/StyledElements';
 import { ProgressBar } from '@components/ProgressBar';
+import { Login } from '@components/Login';
 import { black } from '@/styles/color';
 import { IState } from '@/store/reducers';
 
@@ -62,25 +63,39 @@ export function StartUp() {
     }
   }, [system]);
 
-  const ContentPlaceholder = () => {
+  const ContentPlaceholder = useCallback(() => {
     if (isOff) {
-      return <Content />
+      return (
+        <Loading>
+          <Content />
+        </Loading>
+      )
     }
 
     if (isStarting) {
       return (
-        <Content>
-          <AppleIcon />
+        <Loading>
+          <Content>
+            <AppleIcon />
 
-          <ProgressBar percent={loadingPercent} onFinished={onProgressFinished} />
-        </Content>
+            <ProgressBar percent={loadingPercent} onFinished={onProgressFinished} />
+          </Content>
+        </Loading>
       );
     }
-  }
+
+    if (isNotLogin) {
+      return (
+        <FitContainer>
+          <Login />
+        </FitContainer>
+      )
+    }
+  }, [isOff, isStarting, isNotLogin, loadingPercent]);
 
   return (
-    <Loading>
+    <FitContainer>
       { ContentPlaceholder() }
-    </Loading>
+    </FitContainer>
   )
 }

@@ -1,8 +1,11 @@
-import type {Application} from "./applicationManager";
-import {ApplicationManager} from "./applicationManager";
-import {VirtualFileSystem} from "../VFS/klass/VirtualFileSystem";
-import {TaskManager} from "./taskManager";
-import {SystemState} from './constants/status';
+import type { Application } from "./applicationManager";
+import { ApplicationManager } from "./applicationManager";
+import { VirtualFileSystem } from "../VFS/klass/VirtualFileSystem";
+import { TaskManager } from "./taskManager";
+import { SystemState } from './constants/status';
+import { EvtNames } from "./constants/events";
+import { Observable } from './observer';
+import {LifeCircle} from "@/core/System/constants/lifecircle";
 
 interface User {
   id: string;
@@ -21,15 +24,48 @@ export class System {
   private vfs: VirtualFileSystem | null = null;
   private taskManager: TaskManager | null = null;
   private appManager: ApplicationManager | null = null;
+  private observer: Observable<EvtNames> = new Observable();
+  private lifecycleHooks: Record<LifeCircle, Function[]> | null = null;
   private currentUser: User | null = null; // 当前登录用户
   private settings: SystemSettings | null = null; // 系统设置
-  private activeWindows: Set<number> | null = null; // 当前活动窗口的ID集合
-  private state: SystemState = SystemState.Off;
+  private _activeWindows: Set<number> | null = null; // 当前活动窗口的ID集合
+  private _state: SystemState = SystemState.Off;
   private notActivate = true; // 系统未激活
 
   constructor() {
     // 初始化代码...
-    this.state = SystemState.Off; // 默认关机
+    this._state = SystemState.Off; // 默认关机
+    this.initLifeCircleHooks();
+  }
+
+  initLifeCircleHooks() {
+    this.lifecycleHooks = {
+      [LifeCircle.Change]: [],
+      [LifeCircle.Start]: [],
+      [LifeCircle.Stop]: [],
+      [LifeCircle.Pause]: [],
+      [LifeCircle.Resume]: [],
+      [LifeCircle.Restart]: [],
+      [LifeCircle.Shutdown]: [],
+    };
+  }
+
+  /**
+   * getters
+   */
+  get state() {
+    return this._state;
+  }
+
+
+  /**
+   * setters
+   */
+  set state(value: SystemState) {
+    if (value !== this._state) {
+      this._state = value;
+      this.observer.notify(EvtNames.STATE_CHANGE);
+    }
   }
 
   // 系统状态控制方法
@@ -55,7 +91,7 @@ export class System {
           theme: "light",
           language: "en-US",
         };
-        this.activeWindows = new Set();
+        this._activeWindows = new Set();
         this.state = SystemState.Running;
 
         // 触发系统启动完成的事件
@@ -92,17 +128,12 @@ export class System {
     }
   }
 
-  // 获取当前系统状态
-  getState(): SystemState {
-    return this.state;
-  }
-
   // 根据当前系统状态执行或拒绝操作
   executeOperation(operation: () => void) {
     if (this.state === SystemState.Running) {
       operation();
     } else {
-      console.error("System is not in a state to execute operations.");
+      console.error("System is not in a _state to execute operations.");
     }
   }
 
@@ -113,7 +144,7 @@ export class System {
 
   logout(): void {
     this.currentUser = null;
-    this.activeWindows?.clear();
+    this._activeWindows?.clear();
     // 可以添加更多注销时需要清理的状态
   }
 
@@ -131,15 +162,15 @@ export class System {
 
   // 窗口管理相关方法
   openWindow(windowId: number): void {
-    this.activeWindows?.add(windowId);
+    this._activeWindows?.add(windowId);
   }
 
   closeWindow(windowId: number): void {
-    this.activeWindows?.delete(windowId);
+    this._activeWindows?.delete(windowId);
   }
 
-  getActiveWindows(): number[] {
-    return this.activeWindows ? Array.from(this.activeWindows) : [];
+  get_activeWindows(): number[] {
+    return this._activeWindows ? Array.from(this._activeWindows) : [];
   }
 
   // 文件系统代理方法
@@ -180,6 +211,18 @@ export class System {
 
   }
   // 更多系统级方法...
+
+  private triggerLifecycleHook(hook: EvtNames, ...args: any[]) {
+    this.lifecycleHooks![hook]?.forEach(func => func(...args));
+  }
+
+  // 注册生命周期钩子函数
+  on(hook: EvtNames, func: Function) {
+    if (!this.lifecycleHooks![hook]) {
+      this.lifecycleHooks![hook] = [];
+    }
+    this.lifecycleHooks![hook]!.push(func);
+  }
 
   /**
    * 系统状态判断

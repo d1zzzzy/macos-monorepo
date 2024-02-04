@@ -4,7 +4,7 @@ import { VirtualFileSystem } from "../VFS/klass/VirtualFileSystem";
 import { TaskManager } from "./taskManager";
 import { SystemState } from './constants/status';
 import { EvtNames } from "./constants/events";
-import { Observable } from './observer';
+import { Observable, type EventType } from './observer';
 import {LifeCircle} from "@/core/System/constants/lifecircle";
 
 interface User {
@@ -24,7 +24,7 @@ export class System {
   private vfs: VirtualFileSystem | null = null;
   private taskManager: TaskManager | null = null;
   private appManager: ApplicationManager | null = null;
-  private observer: Observable<EvtNames> = new Observable();
+  private observer: Observable<any> = new Observable();
   private lifecycleHooks: Record<LifeCircle, Function[]> | null = null;
   private currentUser: User | null = null; // 当前登录用户
   private settings: SystemSettings | null = null; // 系统设置
@@ -68,6 +68,14 @@ export class System {
     }
   }
 
+  subscribe(eventName: EventType, callback?: any) {
+    this.observer.subscribe(eventName, callback);
+  }
+
+  unsubscribe(eventName: EventType, callback?: any) {
+    this.observer.unsubscribe(eventName, callback);
+  }
+
   // 系统状态控制方法
   start(config?: {
     onBefore?: () => void,
@@ -96,7 +104,7 @@ export class System {
 
         // 触发系统启动完成的事件
         onSucceed && onSucceed();
-      }, 1500); // 假设启动过程需要1.5秒钟
+      }, 3000); // 假设启动过程需要1.5秒钟
     }
   }
 
@@ -137,6 +145,9 @@ export class System {
     }
   }
 
+  get isNotLoginIn() {
+    return this.isRunning && !this.currentUser;
+  }
   // 登录和注销的方法
   login(user: User): void {
     this.currentUser = user;
@@ -237,10 +248,6 @@ export class System {
 
   get isNotActivate(): boolean {
     return this.state === SystemState.NotActivate;
-  }
-
-  get isNotLoginIn(): boolean {
-    return this.state === SystemState.NotLoginIn;
   }
 
   get isRunning(): boolean {

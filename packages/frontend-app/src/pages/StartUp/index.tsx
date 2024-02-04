@@ -1,3 +1,4 @@
+import {EvtNames} from "@/core/System/constants/events";
 import { Route } from '@tanstack/react-router';
 import { useSelector } from 'react-redux';
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
@@ -30,14 +31,14 @@ const Content = styled.div`
 `;
 
 export function StartUp() {
-  const [loadingPercent, setLoadingPercent] = useState(0);
+  const [loadingPercent, setLoadingPercent] = useState(30);
 
   const navigate = useNavigate({ from: '/start-up' });
   const system = useSelector((state: IState) => state.app.system);
 
-  const isOff = useMemo(() => system?.isOff, [system]);
-  const isStarting = useMemo(() => system?.isOff, [system]);
-  const isNotLogin = useMemo(() => !system?.isOff && system?.isNotLoginIn, [system]);
+  const [isOff, setIsOff] = useState(() => system?.isOff ?? true);
+  const [isStarting, setIsStarting] = useState(() => system?.isStarting ?? false);
+  const [isNotLogin, setIsNotLogin] = useState(() => system?.isNotLoginIn ?? false);
 
   // 系统启动前的回调
   const onSystemLaunchBefore = useCallback(() => {
@@ -54,16 +55,31 @@ export function StartUp() {
     // navigate({to: '/'}).then(r => {});
   }, []);
 
+  const updateStatusRef = useCallback(() => {
+    if (system) {
+      setIsOff(system.isOff);
+      setIsStarting(system.isStarting);
+      setIsNotLogin(system.isNotLoginIn);
+    }
+  }, [system]);
+
   useEffect(() => {
     if (system) {
+      system.subscribe(EvtNames.STATE_CHANGE, updateStatusRef);
+
       system?.start({
         onBefore: onSystemLaunchBefore,
         onSucceed: onSystemLaunched,
       });
     }
+
+    return () => {
+      system && system.unsubscribe(EvtNames.STATE_CHANGE, updateStatusRef);
+    }
   }, [system]);
 
   const ContentPlaceholder = useCallback(() => {
+
     if (isOff) {
       return (
         <Loading>
@@ -91,7 +107,7 @@ export function StartUp() {
         </FitContainer>
       )
     }
-  }, [isOff, isStarting, isNotLogin, loadingPercent]);
+  }, [isOff, isStarting, isNotLogin, loadingPercent, onProgressFinished]);
 
   return (
     <FitContainer>

@@ -6,10 +6,10 @@ import { useNavigate } from '@tanstack/react-router'
 import styled from 'styled-components';
 
 import rootRoute from '@/App';
-import Icon, { AppleIcon } from '@components/Icon';
+import { AppleIcon } from '@components/Icon';
 import { FitContainer } from '@components/StyledElements';
 import { ProgressBar } from '@components/ProgressBar';
-import { Login } from '@components/Login';
+import { Login } from '@pages/StartUp/components/Login';
 import { black } from '@/styles/color';
 import { IState } from '@/store/reducers';
 
@@ -52,8 +52,10 @@ export function StartUp() {
   }, []);
 
   const onProgressFinished = useCallback(() => {
-    // navigate({to: '/'}).then(r => {});
+
   }, []);
+
+  const toHome = () => navigate({to: '/'}).then(r => {});
 
   const updateStatusRef = useCallback(() => {
     if (system) {
@@ -103,7 +105,7 @@ export function StartUp() {
     if (isNotLogin) {
       return (
         <FitContainer>
-          <Login />
+          <Login onLoginSuccess={toHome} />
         </FitContainer>
       )
     }

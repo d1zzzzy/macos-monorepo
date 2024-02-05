@@ -1,21 +1,17 @@
-import type { Task } from './taskManager';
-import { TaskManager } from './taskManager';
+import { IApplication } from '@/core/System/applications/application';
 
-export interface Application {
-  id: string;
-  name: string;
-  // 更多的应用相关属性，例如版本、依赖等
-}
+import type { Task } from '../taskManager';
+import { TaskManager } from '../taskManager';
 
 export class ApplicationManager {
-  private applications: Map<string, Application> = new Map();
+  private applications: Map<string, IApplication> = new Map();
   private taskManager: TaskManager;
 
   constructor(taskManager: TaskManager) {
     this.taskManager = taskManager;
   }
 
-  installApplication(app: Application): void {
+  installApplication(app: IApplication): void {
     if (this.applications.has(app.id)) {
       throw new Error("Application is already installed.");
     }
@@ -37,7 +33,7 @@ export class ApplicationManager {
     this.applications.delete(appId);
   }
 
-  listApplications(): Application[] {
+  listApplications(): IApplication[] {
     return Array.from(this.applications.values());
   }
 }

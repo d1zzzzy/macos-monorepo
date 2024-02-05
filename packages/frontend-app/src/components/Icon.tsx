@@ -1,3 +1,4 @@
+import { ComponentProps } from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
 
 const Icon = createFromIconfontCN({
@@ -16,6 +17,24 @@ export function AppleIcon() {
 export function CapsLockIcon() {
   return (
     <Icon type={'icon-caps-lock'} style={{ fontSize: '24px' }} />
+  );
+}
+
+export function PhotoIcon(props: ComponentProps<'div'>) {
+  return (
+    <Icon { ...props } type={'icon-Photo'} />
+  );
+}
+
+export function CalculatorIcon(props: ComponentProps<'div'>) {
+  return (
+    <Icon { ...props } type={'icon-Calculator'} />
+  );
+}
+
+export function SystemIcon(props: ComponentProps<'div'> & { type: string }) {
+  return (
+    <Icon { ...props } type={props.type} />
   );
 }
 

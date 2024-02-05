@@ -1,5 +1,5 @@
-import type { Application } from "./applicationManager";
-import { ApplicationManager } from "./applicationManager";
+import type { IApplication } from "./applications/application";
+import { ApplicationManager } from "./applications/applicationManager";
 import { VirtualFileSystem } from "../VFS/klass/VirtualFileSystem";
 import { TaskManager } from "./taskManager";
 import { SystemState } from './constants/status';
@@ -196,7 +196,7 @@ export class System {
   // 更多文件系统相关的代理方法...
 
   // 应用管理代理方法
-  installApplication(app: Application) {
+  installApplication(app: IApplication) {
     this.appManager?.installApplication(app);
   }
 

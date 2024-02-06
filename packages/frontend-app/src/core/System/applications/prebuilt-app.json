@@ -1,0 +1,55 @@
+{
+  "system": [
+    {
+      "id": "1",
+      "name": "Photo",
+      "icon": "icon-Photo",
+      "version": "0.0.0",
+      "type": 0,
+      "description": "Photo Application",
+      "permissions": "0B00000001",
+      "shouldUseComponentName": "Photo"
+    },
+    {
+      "id": "2",
+      "name": "Calculator",
+      "icon": "icon-Calculator",
+      "version": "0.0.0",
+      "type": 0,
+      "description": "Calculator Application",
+      "permissions": "0B00000001",
+      "shouldUseComponentName": "Calculator"
+    },
+    {
+      "id": "3",
+      "name": "FaceTime",
+      "icon": "icon-FaceTime",
+      "version": "0.0.0",
+      "type": 0,
+      "description": "FaceTime Application",
+      "permissions": "0B00000001",
+      "shouldUseComponentName": "FaceTime"
+    },
+    {
+      "id": "4",
+      "name": "AppStore",
+      "icon": "icon-a-AppStore",
+      "version": "0.0.0",
+      "type": 0,
+      "description": "AppStore Application",
+      "permissions": "0B00000001",
+      "shouldUseComponentName": "AppStore"
+    },
+    {
+      "id": "5",
+      "name": "Monitor",
+      "icon": "icon-Monitor",
+      "version": "0.0.0",
+      "type": 0,
+      "description": "Monitor Application",
+      "permissions": "0B00000001",
+      "shouldUseComponentName": "Monitor"
+    }
+  ],
+  "store": []
+}

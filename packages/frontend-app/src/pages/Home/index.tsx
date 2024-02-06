@@ -1,7 +1,9 @@
+import { MenuBar } from "@pages/Home/components/MenuBar";
 import { Route } from '@tanstack/react-router';
 import styled from 'styled-components';
 
-import LoginBgImage from '@/assets/wallpaper/night.jpg';
+import LoginBgImage from '@/assets/wallpaper/light.png';
+import Photo from '@components/applications/Photo';
 import { Dock } from '@pages/Home/components/Dock';
 import { FitContainer } from '@components/StyledElements';
 
@@ -24,7 +26,11 @@ export const route = new Route({
 export function Home() {
   return (
     <WithBgImage>
+      <MenuBar />
+
       <Dock />
+
+      <Photo />
     </WithBgImage>
   )
 }

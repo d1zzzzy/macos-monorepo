@@ -1,7 +1,8 @@
-import { IApplication } from '@/core/System/applications/application';
+import {Application, IApplication} from '@/core/System/applications/application';
 
 import type { Task } from '../taskManager';
 import { TaskManager } from '../taskManager';
+import Config from './prebuilt-app.json';
 
 export class ApplicationManager {
   private applications: Map<string, IApplication> = new Map();
@@ -12,10 +13,26 @@ export class ApplicationManager {
   }
 
   installApplication(app: IApplication): void {
-    if (this.applications.has(app.id)) {
-      throw new Error("Application is already installed.");
+    if (!app.shouldUseComponentName) {
+      throw new Error("One application should corresponds to one component.");
     }
+
+    if (this.applications.has(app.id)) {
+      throw new Error("The application is already installed.");
+    }
+
     this.applications.set(app.id, app);
+  }
+
+  installBuiltInAppFromConfigFile(): void {
+    const typedConfig = Config as unknown as Record<string, IApplication[]>;
+    Object.keys(typedConfig).forEach((key) => {
+      const category = typedConfig[key];
+
+      category.forEach((app: IApplication) => {
+        this.installApplication(new Application(app));
+      });
+    });
   }
 
   runApp(appId: string): Task {
@@ -35,5 +52,13 @@ export class ApplicationManager {
 
   listApplications(): IApplication[] {
     return Array.from(this.applications.values());
+  }
+
+  getApplicationById(id: string): IApplication | undefined {
+    return this.applications.get(id);
+  }
+
+  getApplications(ids: string[]): IApplication[] {
+    return ids.map(id => this.getApplicationById(id)).filter(app => app !== undefined) as IApplication[];
   }
 }

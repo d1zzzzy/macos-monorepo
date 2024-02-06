@@ -1,11 +1,11 @@
-import {EvtNames} from "@/core/System/constants/events";
 import { Route } from '@tanstack/react-router';
 import { useSelector } from 'react-redux';
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from '@tanstack/react-router'
 import styled from 'styled-components';
 
 import rootRoute from '@/App';
+import { EvtNames } from '@/core/System/constants/events';
 import { AppleIcon } from '@components/Icon';
 import { FitContainer } from '@components/StyledElements';
 import { ProgressBar } from '@components/ProgressBar';

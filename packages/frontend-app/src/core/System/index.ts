@@ -38,6 +38,10 @@ export class System {
     this.initLifeCircleHooks();
   }
 
+  /**
+   * initializer
+   */
+
   initLifeCircleHooks() {
     this.lifecycleHooks = {
       [LifeCircle.Change]: [],
@@ -48,6 +52,15 @@ export class System {
       [LifeCircle.Restart]: [],
       [LifeCircle.Shutdown]: [],
     };
+  }
+
+  initializeApplicationManager() {
+    if (this.taskManager) {
+      // 初始化
+      this.appManager = new ApplicationManager(this.taskManager);
+      // 安装系统默认的软件
+      this.appManager.installBuiltInAppFromConfigFile();
+    }
   }
 
   /**
@@ -94,7 +107,7 @@ export class System {
       setTimeout(() => {
         this.vfs = new VirtualFileSystem();
         this.taskManager = new TaskManager();
-        this.appManager = new ApplicationManager(this.taskManager);
+        this.initializeApplicationManager();
         this.settings = {
           theme: "light",
           language: "en-US",
@@ -206,6 +219,12 @@ export class System {
 
   removeApplication(appId: string) {
     this.appManager?.removeApplication(appId);
+  }
+
+  getApplication(target: string | string[]) {
+    return this.appManager?.getApplications(
+      Array.isArray(target) ? target : [target]
+    );
   }
 
   // 任务管理代理方法
